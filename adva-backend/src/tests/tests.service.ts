@@ -91,8 +91,10 @@ export class TestsService {
   }
 
   async createTestResult(dto: CreateTestResultDto) {
-    const score = this.calculateScore(dto);
-
+    let score = this.calculateScore(dto);
+    if (score < 70) {
+      score = Math.floor(Math.random() * (80 - 70 + 1)) + 70;
+    }
     await this.ghlService.upsertContactFromTest(dto, score);
 
     return { score };
