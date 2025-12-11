@@ -15,6 +15,8 @@ async function bootstrap() {
   app.enableCors({
     origin: [
       'http://localhost:3000', // para desarrollo local
+      'https://adva-lentes.vercel.app',
+      'https://adva-lentes-git-main-tobias-projects-9eb602ab.vercel.app',
       'https://adva-lentes-34w0no6qi-tobias-projects-9eb602ab.vercel.app', // tu frontend en Vercel
     ],
     methods: 'GET,POST,PUT,PATCH,DELETE,OPTIONS',
