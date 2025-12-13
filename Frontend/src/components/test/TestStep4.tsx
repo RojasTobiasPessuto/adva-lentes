@@ -23,12 +23,27 @@ export function TestStep4({ onNext }: TestStep4Props) {
           <div className="inline-block px-4 py-2 rounded-full bg-white border border-black/10 mb-6">
             <span className="text-sm">Paso 4 de 7</span>
           </div>
-          <h2>Energía, enfoque y estado de ánimo</h2>
-          <p style={{ color: '#666' }}>
+          <h2>Tu energía, enfoque y estado de ánimo</h2>
+          <p style={{ color: '#666', lineHeight: '1.6', marginTop: '16px' }}>
             Cuando tus ritmos circadianos se rompen, tu dopamina y otras hormonas dejan de seguir su ritmo natural. Aparece fatiga constante, menos motivación, más ansiedad y caen tu foco y claridad mental.
           </p>
-          <p style={{ color: '#666' }}>
-            https://pubmed.ncbi.nlm.nih.gov/28780783/
+          <p style={{ color: '#999', fontSize: '0.875rem', marginTop: '12px' }}>
+            <a 
+              href="https://pubmed.ncbi.nlm.nih.gov/28780783/" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              style={{ color: '#999', textDecoration: 'underline', marginRight: '12px' }}
+            >
+              Fuente 1: PubMed
+            </a>
+            <a 
+              href="https://pubmed.ncbi.nlm.nih.gov/32066704/" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              style={{ color: '#999', textDecoration: 'underline' }}
+            >
+              Fuente 2: PubMed
+            </a>
           </p>
         </div>
 
@@ -39,15 +54,15 @@ export function TestStep4({ onNext }: TestStep4Props) {
         </div>
 
         <div className="space-y-8">
-          {/* Nivel de energía */}
+          {/* Pregunta 1: Nivel de energía */}
           <div>
-            <h3 className="mb-4">¿Cómo es tu nivel de energía durante el día?</h3>
+            <h3 className="mb-4">Durante el día, ¿cómo sentís tu nivel de energía?</h3>
             <div className="space-y-3">
               {[
-                { value: 'alta', label: 'Alta y estable durante todo el día' },
-                { value: 'variable', label: 'Variable, con picos y bajones' },
-                { value: 'baja-manana', label: 'Baja por la mañana, mejor por la tarde/noche' },
-                { value: 'baja-constante', label: 'Baja de manera constante, fatiga crónica' },
+                { value: 'alta-estable', label: 'Alta y estable' },
+                { value: 'caida-tarde', label: 'Arranco bien pero me caigo fuerte a la tarde' },
+                { value: 'cansado-todo-dia', label: 'Estoy cansado casi todo el día' },
+                { value: 'necesito-estimulantes', label: 'Necesito café / estimulantes todo el tiempo para rendir' },
               ].map((option) => (
                 <button
                   key={option.value}
@@ -70,15 +85,15 @@ export function TestStep4({ onNext }: TestStep4Props) {
             </div>
           </div>
 
-          {/* Concentración */}
+          {/* Pregunta 2: Concentración */}
           <div>
-            <h3 className="mb-4">¿Cómo describirías tu capacidad de concentración?</h3>
+            <h3 className="mb-4">¿Con qué frecuencia sentís dificultad para concentrarte o mantener el foco?</h3>
             <div className="space-y-3">
               {[
-                { value: 'excelente', label: 'Excelente - Puedo mantener el foco sin problemas' },
-                { value: 'buena', label: 'Buena - A veces me distraigo pero puedo volver al foco' },
-                { value: 'dificil', label: 'Difícil - Me cuesta mantener la atención' },
-                { value: 'muy-dificil', label: 'Muy difícil - Dispersión mental constante' },
+                { value: 'casi-nunca', label: 'Casi nunca' },
+                { value: 'a-veces', label: 'A veces' },
+                { value: 'muy-seguido', label: 'Muy seguido' },
+                { value: 'casi-siempre', label: 'Casi siempre' },
               ].map((option) => (
                 <button
                   key={option.value}
@@ -101,15 +116,15 @@ export function TestStep4({ onNext }: TestStep4Props) {
             </div>
           </div>
 
-          {/* Estado de ánimo */}
+          {/* Pregunta 3: Estado de ánimo */}
           <div>
-            <h3 className="mb-4">¿Cómo está tu estado de ánimo en general?</h3>
+            <h3 className="mb-4">En las últimas semanas, ¿cómo describirías tu estado de ánimo general?</h3>
             <div className="space-y-3">
               {[
-                { value: 'positivo', label: 'Positivo y estable' },
-                { value: 'neutral', label: 'Neutral, sin grandes cambios' },
-                { value: 'variable', label: 'Variable, con altibajos frecuentes' },
-                { value: 'bajo', label: 'Bajo, con tendencia a la ansiedad o tristeza' },
+                { value: 'equilibrado', label: 'Me siento equilibrado y de buen ánimo' },
+                { value: 'algo-irritable', label: 'Algo irritable o ansioso, pero manejable' },
+                { value: 'bastante-irritable', label: 'Bastante irritable, ansioso o con bajones frecuentes' },
+                { value: 'muy-irritable', label: 'Muy irritable, ansioso o con sensación de apatía/decaimiento' },
               ].map((option) => (
                 <button
                   key={option.value}

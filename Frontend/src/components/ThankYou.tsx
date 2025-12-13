@@ -7,6 +7,7 @@ interface ThankYouProps {
 }
 
 export function ThankYou({ score, nombre, onViewEmail }: ThankYouProps) {
+
   const getRiesgoLevel = () => {
     if (score >= 75) return { nivel: 'CRÍTICO', color: 'var(--secondary)' };
     if (score >= 50) return { nivel: 'ALTO', color: 'var(--primary)' };
@@ -15,6 +16,7 @@ export function ThankYou({ score, nombre, onViewEmail }: ThankYouProps) {
   };
 
   const riesgo = getRiesgoLevel();
+  
 
   return (
     <div className="min-h-screen flex items-center justify-center px-4 py-12">

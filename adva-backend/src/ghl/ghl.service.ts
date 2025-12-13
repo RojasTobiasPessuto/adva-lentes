@@ -6,19 +6,25 @@ import { firstValueFrom } from 'rxjs';
 import { CreateTestResultDto } from '../tests/dto/create-test-result.dto';
 import {
   HORAS_PANTALLAS_MAP,
+  PANTALLAS_ANTES_DORMIR_MAP,
+  AMBIENTE_LUZ_ARTIFICIAL_MAP,
   HORAS_DORMIR_MAP,
   CALIDAD_SUENO_MAP,
-  PANTALLAS_ANTES_DORMIR_MAP,
+  CANSANCIO_AL_LEVANTAR_MAP,
   NIVEL_ENERGIA_MAP,
   CONCENTRACION_MAP,
   ESTADO_ANIMO_MAP,
   DESEO_SEXUAL_MAP,
-  LIBIDO_CAMBIOS_MAP,
-  CICLO_MENSTRUAL_MAP,
+  VITALIDAD_FISICA_MAP,
+  REGULARIDAD_CICLO_MAP,
   SINTOMAS_MENSTRUALES_MAP,
-  USA_GAFAS_MAP,
-  ILUMINACION_NOCTURNA_MAP,
-  EXPONE_AL_SOL_MAP,
+  ENERGIA_CICLO_MAP,
+  FERTILIDAD_MAP,
+  ASPECTO_FISICO_MAP,
+  PROTECCION_PANTALLAS_MAP,
+  HORARIOS_PANTALLAS_MAP,
+  DISPOSICION_GAFAS_MAP,
+  mapSintomasFisicosToGhl,
 } from './ghl-mappers';
 
 interface GhlCustomField {
@@ -46,13 +52,8 @@ export class GhlService {
     this.locationId = this.config.get<string>('GHL_LOCATION_ID')!;
   }
 
-  /**
-   * Crea o actualiza un contacto en GoHighLevel a partir del resultado del test.
-   * El score lo calculás en TestsService; acá por ahora NO lo guardamos en GHL.
-   */
   async upsertContactFromTest(dto: CreateTestResultDto, score: number) {
     const url = `${this.baseUrl}/contacts/upsert`;
-
     const customFields: GhlCustomField[] = [];
 
     const pushField = (id: string, value: any) => {
@@ -62,108 +63,137 @@ export class GhlService {
       customFields.push({ id, value });
     };
 
-    // genero (TEXT)
+    /**
+     * ⚠️ NOTA:
+     * - No me pasaste el ID de "genero" (r4yHQrYI0EB0QTNsakmj) en esta lista nueva,
+     *   pero si ya existe en tu cuenta y lo seguís usando, dejalo.
+     * - Si no existe, comentá esta línea.
+     */
     pushField('r4yHQrYI0EB0QTNsakmj', dto.genero);
 
-    // horasPantallas (MULTIPLE_OPTIONS)
+    // Step 2
     pushField(
       'AZSqmqbWTBMCEvilrThN',
       HORAS_PANTALLAS_MAP[dto.horasPantallas] ?? dto.horasPantallas,
     );
 
-    // dispositivosPrincipales (MULTIPLE_OPTIONS simple)
-    pushField('BDuwOgjiXmvt477xhska', dto.dispositivosPrincipales);
+    pushField(
+      'jd8DwaI7ZukQxugJgGwQ',
+      PANTALLAS_ANTES_DORMIR_MAP[dto.pantallasAntesDomir] ??
+        dto.pantallasAntesDomir,
+    );
 
-    // horasDormir
+    pushField(
+      'iAr4phRrLznfXcnfQTBJ',
+      AMBIENTE_LUZ_ARTIFICIAL_MAP[dto.ambienteLuzArtificial] ??
+        dto.ambienteLuzArtificial,
+    );
+
+    // Step 3
     pushField(
       '3fbgzPyHei4KYf5sP4B7',
       HORAS_DORMIR_MAP[dto.horasDormir] ?? dto.horasDormir,
     );
 
-    // calidadSueno
     pushField(
       'eElZrO0gheoAPAPEfPgk',
       CALIDAD_SUENO_MAP[dto.calidadSueno] ?? dto.calidadSueno,
     );
 
-    // pantallasAntesDomir
     pushField(
-      'CpsUMjjcGNLmxEhWJCfe',
-      PANTALLAS_ANTES_DORMIR_MAP[dto.pantallasAntesDomir] ??
-        dto.pantallasAntesDomir,
+      's8oE7665WJ4toekm1hBv',
+      CANSANCIO_AL_LEVANTAR_MAP[dto.cansancioAlLevantar] ??
+        dto.cansancioAlLevantar,
     );
 
-    // nivelEnergia
+    // Step 4
     pushField(
       '5l4jYjt6XuBXwET4grvb',
       NIVEL_ENERGIA_MAP[dto.nivelEnergia] ?? dto.nivelEnergia,
     );
 
-    // concentracion
     pushField(
       'us8jEM64xkukbVnzdOeL',
       CONCENTRACION_MAP[dto.concentracion] ?? dto.concentracion,
     );
 
-    // estadoAnimo
     pushField(
       'CDtN0PfHE8tjH82Yaa2I',
       ESTADO_ANIMO_MAP[dto.estadoAnimo] ?? dto.estadoAnimo,
     );
 
-    // deseoSexual
+    // Step 5
     pushField(
       'bRaZFLfNtr5PaKa6L8Ze',
       DESEO_SEXUAL_MAP[dto.deseoSexual] ?? dto.deseoSexual,
     );
 
-    // libidoCambios
     pushField(
-      'XkTFDxjiV4Ae3pY3bf14',
-      LIBIDO_CAMBIOS_MAP[dto.libidoCambios] ?? dto.libidoCambios,
+      'pqOM7a8BxECcYI9FcF9I',
+      VITALIDAD_FISICA_MAP[dto.vitalidadFisica] ?? dto.vitalidadFisica,
     );
 
-    // sintomas (MULTIPLE_OPTIONS) → array de strings
-    pushField('8rt4QVWT7DTkyXFHanif', dto.sintomas ?? []);
-
-    // usaGafasBlueLight
-    pushField(
-      'rCLcBPjgaQVWa539KtT7',
-      USA_GAFAS_MAP[dto.usaGafasBlueLight] ?? dto.usaGafasBlueLight,
-    );
-
-    // iluminacionNocturna
-    pushField(
-      'AeAHaRUP92R6ycRzAXPt',
-      ILUMINACION_NOCTURNA_MAP[dto.iluminacionNocturna] ??
-        dto.iluminacionNocturna,
-    );
-
-    // exponeAlSol
-    pushField(
-      'MSWxmc420ioCdHPB9Czl',
-      EXPONE_AL_SOL_MAP[dto.exponeAlSol] ?? dto.exponeAlSol,
-    );
-
-    // cicloMenstrual (opcional)
-    if (dto.cicloMenstrual) {
+    // Mujeres (opcionales)
+    if (dto.regularidadCiclo) {
       pushField(
-        'lMTkYQcRwZNykSpw4ScT',
-        CICLO_MENSTRUAL_MAP[dto.cicloMenstrual] ?? dto.cicloMenstrual,
+        'QiTEqBpYk5JbqVeMzBUz',
+        REGULARIDAD_CICLO_MAP[dto.regularidadCiclo] ?? dto.regularidadCiclo,
       );
     }
 
-    // sintomasMenstruales (opcional)
     if (dto.sintomasMenstruales) {
       pushField(
-        'QM6tfpUqyUl7R2mMkUvO',
+        '8N7AbuVzjzx3RfMdEfJD',
         SINTOMAS_MENSTRUALES_MAP[dto.sintomasMenstruales] ??
           dto.sintomasMenstruales,
       );
     }
 
-    // Si más adelante creás un custom field para el score:
-    // pushField('ID_DEL_CAMPO_SCORE', score.toString());
+    if (dto.energiaCiclo) {
+      pushField(
+        'fGoAhwiNlcGdZEmEhr9S',
+        ENERGIA_CICLO_MAP[dto.energiaCiclo] ?? dto.energiaCiclo,
+      );
+    }
+
+    if (dto.fertilidad) {
+      pushField(
+        'PEO3TIH8qt92sITcdgtK',
+        FERTILIDAD_MAP[dto.fertilidad] ?? dto.fertilidad,
+      );
+    }
+
+    // sintomas físicos (MULTIPLE_OPTIONS)
+    const sintomasRaw = dto.sintomasFisicos ?? dto.sintomas ?? [];
+    pushField(
+      '8rt4QVWT7DTkyXFHanif',
+      mapSintomasFisicosToGhl(sintomasRaw),
+    );
+
+    pushField(
+      'OtZruXxeNzJE0iO7FqJl',
+      ASPECTO_FISICO_MAP[dto.aspectoFisico] ?? dto.aspectoFisico,
+    );
+
+    // visionAfectada (array)
+    pushField('OjljHnvwtIXuuCxlkTYV', dto.visionAfectada ?? []);
+
+    // Step 7
+    pushField(
+      '9VToXzXKdAZzwR3CU0g7',
+      PROTECCION_PANTALLAS_MAP[dto.proteccionPantallas] ?? dto.proteccionPantallas,
+    );
+
+    pushField(
+      'aPmc9AmKeFLLg1Oj5mej',
+      HORARIOS_PANTALLAS_MAP[dto.horariosPantallas] ?? dto.horariosPantallas,
+    );
+
+    pushField(
+      'teH7OQe3I2uPH4VQ5Plu',
+      DISPOSICION_GAFAS_MAP[dto.disposicionGafas] ?? dto.disposicionGafas,
+    );
+    pushField('HeS58WHJL2fUvv1390SH', score);
 
     const body = {
       firstName: dto.nombre,
@@ -171,7 +201,7 @@ export class GhlService {
       locationId: this.locationId,
       name: dto.nombre,
       tags: ['ADVA Optics', 'Test Lumínico'],
-      customFields, // 👈 formato correcto para la API 2.0
+      customFields,
     };
 
     const headers = {
@@ -182,12 +212,8 @@ export class GhlService {
     };
 
     try {
-      const res = await firstValueFrom(
-        this.http.post(url, body, { headers }),
-      );
-      this.logger.log(
-        `GHL upsert contact OK: ${JSON.stringify(res.data)}`,
-      );
+      const res = await firstValueFrom(this.http.post(url, body, { headers }));
+      this.logger.log(`GHL upsert contact OK: ${JSON.stringify(res.data)}`);
       return res.data;
     } catch (error: any) {
       this.logger.error(

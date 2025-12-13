@@ -2,17 +2,17 @@ import { useState } from 'react';
 import { Moon, CloudMoon } from 'lucide-react';
 
 interface TestStep3Props {
-  onNext: (data: { horasDormir: string; calidadSueno: string; pantallasAntesDomir: string }) => void;
+  onNext: (data: { horasDormir: string; calidadSueno: string; cansancioAlLevantar: string }) => void;
 }
 
 export function TestStep3({ onNext }: TestStep3Props) {
   const [horasDormir, setHorasDormir] = useState('');
   const [calidadSueno, setCalidadSueno] = useState('');
-  const [pantallasAntesDomir, setPantallasAntesDomir] = useState('');
+  const [cansancioAlLevantar, setCansancioAlLevantar] = useState('');
 
   const handleSubmit = () => {
-    if (horasDormir && calidadSueno && pantallasAntesDomir) {
-      onNext({ horasDormir, calidadSueno, pantallasAntesDomir });
+    if (horasDormir && calidadSueno && cansancioAlLevantar) {
+      onNext({ horasDormir, calidadSueno, cansancioAlLevantar });
     }
   };
 
@@ -24,8 +24,26 @@ export function TestStep3({ onNext }: TestStep3Props) {
             <span className="text-sm">Paso 3 de 7</span>
           </div>
           <h2>Tu sueño y tu descanso real</h2>
-          <p style={{ color: '#666' }}>
-            La melatonina se suprime con la luz azul, retrasando tu reloj biológico y afectando la calidad del sueño profundo.
+          <p style={{ color: '#666', lineHeight: '1.6', marginTop: '16px' }}>
+            La luz azul de las pantallas por la noche engaña a tu cerebro: le hace creer que todavía es de día. Eso frena la producción de melatonina, la hormona que inicia el sueño profundo. Cuando tus ritmos circadianos se desregulan, aumenta la inflamación, cae tu energía y tu cuerpo entra en modo estrés crónico.
+          </p>
+          <p style={{ color: '#999', fontSize: '0.875rem', marginTop: '12px' }}>
+            <a 
+              href="https://pubmed.ncbi.nlm.nih.gov/25526564/" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              style={{ color: '#999', textDecoration: 'underline', marginRight: '12px' }}
+            >
+              Fuente 1: PubMed
+            </a>
+            <a 
+              href="https://pubmed.ncbi.nlm.nih.gov/21164152/" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              style={{ color: '#999', textDecoration: 'underline' }}
+            >
+              Fuente 2: PubMed
+            </a>
           </p>
         </div>
 
@@ -35,15 +53,15 @@ export function TestStep3({ onNext }: TestStep3Props) {
         </div>
 
         <div className="space-y-8">
-          {/* Horas de sueño */}
+          {/* Pregunta 1: Horas de sueño */}
           <div>
-            <h3 className="mb-4">¿Cuántas horas dormís por noche?</h3>
+            <h3 className="mb-4">En promedio, ¿cuántas horas dormís por noche?</h3>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
               {[
-                { value: '<5', label: 'Menos de 5h' },
-                { value: '5-6', label: '5-6 horas' },
-                { value: '7-8', label: '7-8 horas' },
-                { value: '8+', label: 'Más de 8h' },
+                { value: 'menos-5', label: 'Menos de 5 horas' },
+                { value: '5-7', label: 'Entre 5 y 7 horas' },
+                { value: '7-9', label: 'Entre 7 y 9 horas' },
+                { value: 'mas-9', label: 'Más de 9 horas' },
               ].map((option) => (
                 <button
                   key={option.value}
@@ -66,15 +84,15 @@ export function TestStep3({ onNext }: TestStep3Props) {
             </div>
           </div>
 
-          {/* Calidad del sueño */}
+          {/* Pregunta 2: Calidad del sueño */}
           <div>
-            <h3 className="mb-4">¿Cómo calificarías tu calidad de sueño?</h3>
+            <h3 className="mb-4">¿Cómo describirías la calidad de tu sueño?</h3>
             <div className="space-y-3">
               {[
-                { value: 'excelente', label: 'Excelente - Me despierto descansado/a' },
-                { value: 'buena', label: 'Buena - Generalmente duermo bien' },
-                { value: 'regular', label: 'Regular - Me cuesta conciliar el sueño o me despierto cansado/a' },
-                { value: 'mala', label: 'Mala - Insomnio frecuente, sueño fragmentado' },
+                { value: 'profundo', label: 'Duermo profundo y me levanto descansado casi siempre' },
+                { value: 'me-despierto', label: 'Me despierto 1–2 veces, pero me vuelvo a dormir fácil' },
+                { value: 'me-cuesta', label: 'Me cuesta conciliar el sueño y me despierto varias veces' },
+                { value: 'cansado', label: 'Me levanto cansado casi todos los días' },
               ].map((option) => (
                 <button
                   key={option.value}
@@ -113,26 +131,27 @@ export function TestStep3({ onNext }: TestStep3Props) {
             </div>
           </div>
 
-          {/* Pantallas antes de dormir */}
+          {/* Pregunta 3: Cansancio al levantarse */}
           <div>
-            <h3 className="mb-4">¿Usás pantallas antes de dormir?</h3>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+            <h3 className="mb-4">¿Qué tan seguido te levantás sintiendo que seguís cansado o con "resaca de pantalla"?</h3>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
               {[
-                { value: 'nunca', label: 'Nunca o rara vez' },
-                { value: 'a-veces', label: 'A veces' },
-                { value: 'siempre', label: 'Casi siempre' },
+                { value: 'casi-nunca', label: 'Casi nunca' },
+                { value: '1-2-veces', label: '1–2 veces por semana' },
+                { value: '3-5-veces', label: '3–5 veces por semana' },
+                { value: 'casi-todos-dias', label: 'Casi todos los días' },
               ].map((option) => (
                 <button
                   key={option.value}
                   type="button"
-                  onClick={() => setPantallasAntesDomir(option.value)}
-                  className={`p-4 rounded-xl border-2 transition-all ${
-                    pantallasAntesDomir === option.value
+                  onClick={() => setCansancioAlLevantar(option.value)}
+                  className={`p-4 rounded-xl border-2 transition-all text-center ${
+                    cansancioAlLevantar === option.value
                       ? 'border-black bg-white shadow-md'
                       : 'border-black/10 bg-white hover:border-black/30'
                   }`}
                   style={
-                    pantallasAntesDomir === option.value
+                    cansancioAlLevantar === option.value
                       ? { borderColor: 'var(--secondary)' }
                       : {}
                   }
@@ -146,7 +165,7 @@ export function TestStep3({ onNext }: TestStep3Props) {
           <div className="text-center pt-4">
             <button
               onClick={handleSubmit}
-              disabled={!horasDormir || !calidadSueno || !pantallasAntesDomir}
+              disabled={!horasDormir || !calidadSueno || !cansancioAlLevantar}
               className="px-12 py-4 rounded-full text-white transition-all hover:scale-105 hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
               style={{ background: 'var(--primary)' }}
             >

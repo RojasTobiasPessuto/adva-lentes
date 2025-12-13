@@ -1,3 +1,4 @@
+// src/tests/dto/create-test-result.dto.ts
 import { IsArray, IsEmail, IsOptional, IsString } from 'class-validator';
 
 export class CreateTestResultDto {
@@ -16,7 +17,10 @@ export class CreateTestResultDto {
   horasPantallas: string;
 
   @IsString()
-  dispositivosPrincipales: string;
+  pantallasAntesDomir: string;
+
+  @IsString()
+  ambienteLuzArtificial: string;
 
   // Step 3
   @IsString()
@@ -26,7 +30,7 @@ export class CreateTestResultDto {
   calidadSueno: string;
 
   @IsString()
-  pantallasAntesDomir: string;
+  cansancioAlLevantar: string;
 
   // Step 4
   @IsString()
@@ -43,28 +47,49 @@ export class CreateTestResultDto {
   deseoSexual: string;
 
   @IsString()
-  libidoCambios: string;
+  vitalidadFisica: string;
 
   @IsOptional()
   @IsString()
-  cicloMenstrual?: string;
+  regularidadCiclo?: string;
 
   @IsOptional()
   @IsString()
   sintomasMenstruales?: string;
 
-  // Step 6
+  @IsOptional()
+  @IsString()
+  energiaCiclo?: string;
+
+  @IsOptional()
+  @IsString()
+  fertilidad?: string;
+
+  // Step 6 (✅ compat: nuevo y viejo)
+  @IsOptional()
   @IsArray()
   @IsString({ each: true })
-  sintomas: string[];
+  sintomasFisicos?: string[];
+
+  @IsOptional()
+  @IsArray()
+  @IsString({ each: true })
+  sintomas?: string[];
+
+  @IsString()
+  aspectoFisico: string;
+
+  @IsArray()
+  @IsString({ each: true })
+  visionAfectada: string[];
 
   // Step 7
   @IsString()
-  usaGafasBlueLight: string;
+  proteccionPantallas: string;
 
   @IsString()
-  iluminacionNocturna: string;
+  horariosPantallas: string;
 
   @IsString()
-  exponeAlSol: string;
+  disposicionGafas: string;
 }
